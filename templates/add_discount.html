@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Add New Discount - Discount Listing{% endblock %}
+
+{% block content %}
+<h1>🎯 Add New Discount</h1>
+
+<div class="form-container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.product.label(class="form-label") }}
+            {{ form.product(class="form-control") }}
+            {% if form.product.errors %}
+                <div class="error">{{ form.product.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.percent.label(class="form-label") }}
+            {{ form.percent(class="form-control") }}
+            {% if form.percent.errors %}
+                <div class="error">{{ form.percent.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.category.label(class="form-label") }}
+            {{ form.category(class="form-control") }}
+            {% if form.category.errors %}
+                <div class="error">{{ form.category.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.start.label(class="form-label") }}
+            {{ form.start(class="form-control") }}
+            {% if form.start.errors %}
+                <div class="error">{{ form.start.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.end.label(class="form-label") }}
+            {{ form.end(class="form-control") }}
+            {% if form.end.errors %}
+                <div class="error">{{ form.end.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.city.label(class="form-label") }}
+            {{ form.city(class="form-control") }}
+            {% if form.city.errors %}
+                <div class="error">{{ form.city.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

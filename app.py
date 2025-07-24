@@ -23,8 +23,8 @@ def create_app():
     def load_user(shop_id):
         return Shop.query.get(int(shop_id))
 
-    @app.before_first_request
-    def create_tables():
+    # FIXED: Replace @app.before_first_request with app_context
+    with app.app_context():
         db.create_all()
 
     # ---------- Routes ----------
@@ -55,7 +55,7 @@ def create_app():
         search_term = request.args.get("search")
         if search_term:
             like = f"%{search_term}%"
-            query = query.filter(
+            query = query.join(Shop).filter(
                 (Discount.product.ilike(like)) | (Shop.name.ilike(like))
             )
 
@@ -118,4 +118,5 @@ def create_app():
     return app
 
 if __name__ == "__main__":
-    create_app().run(debug=True)
+    app = create_app()
+    app.run(debug=True)

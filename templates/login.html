@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Shop Login - Discount Listing{% endblock %}
+
+{% block content %}
+<h1>🔑 Shop Login</h1>
+
+<div class="form-container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            {% if form.email.errors %}
+                <div class="error">{{ form.email.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.pwd.label(class="form-label") }}
+            {{ form.pwd(class="form-control") }}
+            {% if form.pwd.errors %}
+                <div class="error">{{ form.pwd.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn") }}
+        </div>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        Don't have an account? <a href="{{ url_for('register') }}">Register your shop</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,33 +1,65 @@
 {% extends "base.html" %}
-{% block title %}All Discounts{% endblock %}
+{% block title %}Discount Listing - Find Best Deals in Your City{% endblock %}
+
 {% block content %}
-<form method="get">
-  <select name="date">
-    <option value="all">Any date</option>
-    <option value="today">Today</option>
-    <option value="tomorrow">Tomorrow</option>
-    <option value="week">This week</option>
-  </select>
-  <select name="cat">
-    <option value="all">All categories</option>
-    <option value="Kitchen">Kitchen</option>
-    <option value="Hotel">Hotel</option>
-    <option value="Restaurant">Restaurant</option>
-    <option value="Electronics">Electronics</option>
-    <option value="Clothing">Clothing</option>
-  </select>
-  <input type="text" name="search" placeholder="Search product or shop">
-  <button type="submit">Filter</button>
-</form>
+<h1>🛍️ Discover Amazing Discounts</h1>
+
+<div class="filter-section">
+    <form method="get" class="filter-form">
+        <select name="date">
+            <option value="all" {% if request.args.get('date') == 'all' %}selected{% endif %}>📅 Any Date</option>
+            <option value="today" {% if request.args.get('date') == 'today' %}selected{% endif %}>🌟 Today Only</option>
+            <option value="tomorrow" {% if request.args.get('date') == 'tomorrow' %}selected{% endif %}>⏰ Tomorrow</option>
+            <option value="week" {% if request.args.get('date') == 'week' %}selected{% endif %}>📆 This Week</option>
+        </select>
+
+        <select name="cat">
+            <option value="all" {% if request.args.get('cat') == 'all' %}selected{% endif %}>🏷️ All Categories</option>
+            <option value="Kitchen" {% if request.args.get('cat') == 'Kitchen' %}selected{% endif %}>🍳 Kitchen</option>
+            <option value="Hotel" {% if request.args.get('cat') == 'Hotel' %}selected{% endif %}>🏨 Hotel</option>
+            <option value="Restaurant" {% if request.args.get('cat') == 'Restaurant' %}selected{% endif %}>🍽️ Restaurant</option>
+            <option value="Electronics" {% if request.args.get('cat') == 'Electronics' %}selected{% endif %}>📱 Electronics</option>
+            <option value="Clothing" {% if request.args.get('cat') == 'Clothing' %}selected{% endif %}>👕 Clothing</option>
+        </select>
+
+        <input type="text" name="search" placeholder="🔍 Search products or shops..." value="{{ request.args.get('search', '') }}">
+        <button type="submit">Filter Results</button>
+    </form>
+</div>
 
 <h2>Featured Discounts</h2>
-{% for d in discounts %}
-  <article>
-    <h3>{{ d.product }} — {{ d.percent_off }}% off</h3>
-    <p>{{ d.category }} | {{ d.city }} | {{ d.start_date }}-{{ d.end_date }}</p>
-    <p>Shop: {{ d.shop.name }}</p>
-  </article>
+
+{% if discounts %}
+    <div class="discounts-grid">
+        {% for discount in discounts %}
+            <div class="discount-card">
+                <div class="discount-header">
+                    <div class="discount-title">{{ discount.product }}</div>
+                    <div class="discount-percentage">{{ discount.percent_off }}% OFF</div>
+                </div>
+                
+                <div class="discount-details">
+                    Amazing deal on {{ discount.product }}! Don't miss out on this limited-time offer.
+                </div>
+                
+                <div class="discount-meta">
+                    <span class="discount-category">{{ discount.category }}</span>
+                    <span class="discount-city">📍 {{ discount.city }}</span>
+                    <span class="discount-dates">🗓️ {{ discount.start_date.strftime('%b %d') }} - {{ discount.end_date.strftime('%b %d') }}</span>
+                </div>
+                
+                <div class="shop-name">🏪 {{ discount.shop.name }}</div>
+            </div>
+        {% endfor %}
+    </div>
 {% else %}
-  <p>No discounts found.</p>
-{% endfor %}
+    <div class="no-results">
+        <h3>No discounts found</h3>
+        <p>Be the first to add amazing deals! 
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('register') }}">Register your shop</a> to start listing discounts.
+        {% endif %}
+        </p>
+    </div>
+{% endif %}
 {% endblock %}
