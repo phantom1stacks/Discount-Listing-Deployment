@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}All Discounts{% endblock %}
+{% block content %}
+<form method="get">
+  <select name="date">
+    <option value="all">Any date</option>
+    <option value="today">Today</option>
+    <option value="tomorrow">Tomorrow</option>
+    <option value="week">This week</option>
+  </select>
+  <select name="cat">
+    <option value="all">All categories</option>
+    <option value="Kitchen">Kitchen</option>
+    <option value="Hotel">Hotel</option>
+    <option value="Restaurant">Restaurant</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Clothing">Clothing</option>
+  </select>
+  <input type="text" name="search" placeholder="Search product or shop">
+  <button type="submit">Filter</button>
+</form>
+
+<h2>Featured Discounts</h2>
+{% for d in discounts %}
+  <article>
+    <h3>{{ d.product }} — {{ d.percent_off }}% off</h3>
+    <p>{{ d.category }} | {{ d.city }} | {{ d.start_date }}-{{ d.end_date }}</p>
+    <p>Shop: {{ d.shop.name }}</p>
+  </article>
+{% else %}
+  <p>No discounts found.</p>
+{% endfor %}
+{% endblock %}
